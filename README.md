@@ -1,1 +1,1 @@
-# Dormitory-Management-System
+# Student-Management-System
