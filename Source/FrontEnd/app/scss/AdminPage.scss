@@ -1,0 +1,80 @@
+* {
+  font-family: tahoma, verdana;
+  font-size: 9pt;
+}
+.container {
+  height: 100vh;
+  font-family: tahoma, verdana;
+  background: url(../img/Background.png) center;
+  .base {
+    width: 1006px;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    text-align: left;
+    height: 100vh;
+    .main-content {
+      width: 100%;
+      background: #dae4eb;
+      .header-banner {
+        background-image: url(../img/bghd.jpg);
+        height: 110px;
+        width: 100%;
+        .logo-image {
+          img {
+            margin-top: 10px;
+            width: 50%;
+          }
+        }
+      }
+      .left-menu {
+        .right-menu {
+          background: transparent url(../img/MenuBgRight.png) no-repeat top left;
+          height: 42px;
+          .main-menu {
+            background: url(../img/MenuBg.png);
+            background-repeat: none;
+            height: 42px;
+            margin: 0 2px 0 5px;
+            color: #07456c;
+            font-size: 8pt;
+            font-weight: bold;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            button {
+              float: left;
+              cursor: pointer;
+              height: 42px;
+              line-height: 55px;
+              margin: 0 8px;
+              //   background-color: inherit;
+              background: transparent;
+              font-weight: bold;
+              border: none;
+            }
+            button:hover {
+              border-bottom: 4px solid #fe8606;
+              //   box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+            }
+            button.active {
+              border-bottom: 4px solid #fe8606;
+            }
+            button.focus {
+              //   border-bottom: 2px solid #fe8606;
+              border: none !important;
+            }
+            .tabcontent {
+              display: none;
+              padding: 6px 12px;
+              border: 1px solid #ccc;
+              border-top: none;
+            }
+          }
+        }
+      }
+    }
+  }
+}
