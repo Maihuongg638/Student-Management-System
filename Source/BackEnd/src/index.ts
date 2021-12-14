@@ -1,5 +1,6 @@
 import bodyParser from "body-parser";
 import express from "express";
+import { db } from "./config/connectDB";
 import { deleteDepartment } from "./routes/deleteDepartment";
 import { getDepartment } from "./routes/getDepartment";
 import { getDoctor } from "./routes/getDoctor";
@@ -25,4 +26,8 @@ app.use(updateDepartment);
 
 app.listen(port, () => {
   console.log("Node server started running at " + port);
+  db.connect(function (err) {
+    if (err) throw err;
+    console.log("Connected!");
+  });
 });
