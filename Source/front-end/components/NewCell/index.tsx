@@ -33,7 +33,7 @@ function NewCell({ title, content, ...boxProps }: Props & BoxProps) {
         {title}
       </Text>
       <Flex w="100%" h="150px" mt="10px" overflow="auto">
-        <Img mr="10px" src="https://via.placeholder.com/150" />
+        <Img mr="10px" src="img/new.png" />
         <Text fontSize="12px" textAlign="left">
           {content}
         </Text>

@@ -1,10 +1,10 @@
 import mysql from "mysql2";
 
 export const configDB = {
-  host: "remotemysql.com",
-  user: "fAT9sOl8vw",
-  password: "t4SIUtwmrB",
-  database: "fAT9sOl8vw",
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "test",
   port: 3306,
 };
 

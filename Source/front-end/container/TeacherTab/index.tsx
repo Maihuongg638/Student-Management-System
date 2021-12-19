@@ -4,12 +4,6 @@ import {
   Button,
   Flex,
   HStack,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  Radio,
-  RadioGroup,
-  Stack,
   Table,
   Tbody,
   Td,
@@ -18,66 +12,39 @@ import {
   Tr,
   useDisclosure,
 } from "@chakra-ui/react";
+import _ from "lodash";
 import * as React from "react";
-import { EditModal } from "../../components/EditModal";
+import { EditModalTeacher } from "../../components/EditModalTeacher";
 import { MakeSure } from "../../components/MakeSure";
 import { Search } from "../../components/Search";
-
-const dummyData = [
-  {
-    id: "A123",
-    name: "Nguyen Van A",
-    department: "May tinh",
-  },
-  {
-    id: "A123",
-    name: "Nguyen Van A",
-    department: "May tinh",
-  },
-  {
-    id: "A123",
-    name: "Nguyen Van A",
-    department: "May tinh",
-  },
-  {
-    id: "A123",
-    name: "Nguyen Van A",
-    department: "May tinh",
-  },
-];
+import { TeacherData } from "../../constants/types";
+import { getTeacherAndDepartments } from "../../services/api";
 
 const Row = ({
-  id,
-  name,
-  department,
+  data,
+  onSelect,
   onOpen,
-  onDelete,
 }: {
-  id: string;
-  name: string;
-  department: string;
+  data: TeacherData;
+  onSelect: () => void;
   onOpen: () => void;
-  onDelete: () => void;
 }) => {
   return (
     <>
       <Tr>
-        <Td>{id}</Td>
-        <Td>{name}</Td>
-        <Td>{department}</Td>
+        <Td>{data.Ma_GV}</Td>
+        <Td>{data.Ten_GV}</Td>
+        <Td>{data.Ten_Khoa}</Td>
         <Td>
-          <HStack spacing="10px">
+          <HStack spacing="20px">
             <Button
               _focus={{ outline: "none" }}
               colorScheme="green"
-              onClick={onOpen}>
+              onClick={() => {
+                onSelect();
+                onOpen();
+              }}>
               Chi tiết
-            </Button>
-            <Button
-              _focus={{ outline: "none" }}
-              colorScheme="red"
-              onClick={onDelete}>
-              Xóa
             </Button>
           </HStack>
         </Td>
@@ -87,25 +54,76 @@ const Row = ({
 };
 
 function TeacherTab() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [aleart, setAleart] = React.useState(false);
-  const [add, setAdd] = React.useState(false);
+  const [data, setData] = React.useState<TeacherData[] | null>(null);
+  const [textSearch, setTextSearch] = React.useState("");
+  const [type, setType] = React.useState("1");
+  const [select, setSelect] = React.useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const filterData = (text: string, type: string) => {
+    if (type == "1") {
+      //theo ma giao vien
+      return data?.filter((ele) => ele.Ma_GV.search(text) >= 0);
+    }
+    if (type == "2") {
+      //theo ten
+      return data?.filter((ele) => ele.Ten_GV.search(text) >= 0);
+    }
+    if (type == "3") {
+      //theo Khoa
+      return data?.filter((ele) => ele.Ten_Khoa.search(text) >= 0);
+    }
+  };
+
+  const onDeleteItem = (id: string) => {
+    const temp = _.cloneDeep(data?.filter((ele) => ele.Ma_GV != id));
+    temp && setData(temp);
+  };
+
+  React.useEffect(() => {
+    const temp = getTeacherAndDepartments();
+    temp
+      .then((res) => {
+        return res.json();
+      })
+      .then((result) => {
+        let listTemp = result as TeacherData[];
+        setData((d) => (d = listTemp));
+      });
+  }, []);
+
+  const handleUpdateData = (item: TeacherData) => {
+    const idx = data?.findIndex((ele) => ele.Ma_GV === item.Ma_GV);
+    if (idx != undefined && idx >= 0) {
+      if (data != null) {
+        const temp = _.cloneDeep(data);
+        temp[idx] = { ...item };
+        setData(temp);
+      }
+    }
+  };
 
   const handelOnCloseAlert = () => {
     setAleart(false);
   };
-  const handelOnOpenAlert = () => {
-    setAleart(true);
+
+  const handleChangeText = (value: string) => {
+    setTextSearch(value);
   };
 
-  const handelChangeAdd = () => {
-    setAdd(!add);
+  const handleChangeType = (value: string) => {
+    setType(value);
+  };
+
+  const changeSelect = (id: string) => {
+    setSelect(id);
   };
 
   return (
     <Flex justifyContent="space-between">
-      <Box w="70%" border="1px solid #89898b" p="20px" borderRadius="10px">
-        <Search />
+      <Box w="100%" border="1px solid #89898b" p="20px" borderRadius="10px">
+        <Search onGetText={handleChangeText} onChangeType={handleChangeType} />
         <Table>
           <Thead>
             <Tr>
@@ -116,112 +134,37 @@ function TeacherTab() {
             </Tr>
           </Thead>
           <Tbody>
-            {dummyData.map((item, index) => {
+            {filterData(textSearch, type)?.map((item, index) => {
               return (
                 <Row
                   key={index}
-                  {...item}
+                  data={item}
+                  onSelect={() => {
+                    changeSelect(item.Ma_GV);
+                  }}
                   onOpen={onOpen}
-                  onDelete={handelOnOpenAlert}
                 />
               );
             })}
           </Tbody>
         </Table>
-        <EditModal isOpen={isOpen} onClose={onClose} />
-        <MakeSure isOpen={aleart} onClose={handelOnCloseAlert} />
-      </Box>
-      <Box w="30%" px="10px">
-        <Button w="100%" colorScheme="green" onClick={handelChangeAdd}>
-          Thêm giảng viên
-        </Button>
-        <Box mt="10px" display={add ? "block" : "none"}>
-          <InputGroup>
-            <InputLeftAddon w="25%" children="Mã số" />
-            <Input
-              _focus={{ outline: "none" }}
-              type="text"
-              defaultValue="A123"
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftAddon w="25%" children="Họ và tên" />
-            <Input
-              _focus={{ outline: "none" }}
-              type="text"
-              defaultValue="Nguyen Van A"
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftAddon w="25%" children="Ngày sinh" />
-            <Input
-              _focus={{ outline: "none" }}
-              type="text"
-              defaultValue="22/03/2000"
-            />
-          </InputGroup>
-          <InputGroup alignItems="center">
-            <InputLeftAddon w="25%" children="Giới tính" />
-            <RadioGroup ml="15px" defaultValue="1">
-              <Stack direction="row">
-                <Radio colorScheme="green" value="1">
-                  Name
-                </Radio>
-                <Radio colorScheme="green" value="2">
-                  Nữ
-                </Radio>
-              </Stack>
-            </RadioGroup>
-          </InputGroup>
-          <InputGroup>
-            <InputLeftAddon w="25%" children="Bằng cấp" />
-            <Input
-              _focus={{ outline: "none" }}
-              type="text"
-              defaultValue="Giáo sư"
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftAddon w="25%" children="Số điện thoại" />
-            <Input
-              _focus={{ outline: "none" }}
-              type="tel"
-              defaultValue="091394281"
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftAddon w="25%" children="Địa chỉ" />
-            <Input
-              _focus={{ outline: "none" }}
-              type="text"
-              defaultValue="Thành phố HCM"
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftAddon w="25%" children="Email" />
-            <Input
-              _focus={{ outline: "none" }}
-              type="email"
-              defaultValue="example@gmail.com"
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftAddon w="25%" children="Mật khẩu" />
-            <Input
-              _focus={{ outline: "none" }}
-              type="text"
-              defaultValue="123456"
-            />
-          </InputGroup>
-          <InputGroup>
-            <InputLeftAddon w="25%" children="Khoa" />
-            <Input
-              _focus={{ outline: "none" }}
-              type="text"
-              defaultValue="Môi trường"
-            />
-          </InputGroup>
-        </Box>
+        <MakeSure
+          isOpen={aleart}
+          onClose={handelOnCloseAlert}
+          select={select}
+          onDelete={onDeleteItem}
+          type="teacher"
+        />
+        <EditModalTeacher
+          data={
+            data?.findIndex((ele) => ele.Ma_GV === select) != -1
+              ? data?.at(data?.findIndex((ele) => ele.Ma_GV == select))
+              : undefined
+          }
+          isOpen={isOpen}
+          onClose={onClose}
+          onUpdate={handleUpdateData}
+        />
       </Box>
     </Flex>
   );

@@ -7,7 +7,12 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
+import { ClassTab } from "../container/ClassTab";
+import { DepartmentTab } from "../container/DepartmentTab";
 import { HomeTab } from "../container/HomeTab";
+import { MajorTab } from "../container/MajorTab";
+import { StudentTab } from "../container/StudentTab";
+import { SubjectTab } from "../container/SubjectTab";
 import { TeacherTab } from "../container/TeacherTab";
 
 const Home = () => {
@@ -40,9 +45,9 @@ const Home = () => {
           <Tab _focus={{ outline: "none" }}>Giảng viên</Tab>
           <Tab _focus={{ outline: "none" }}>Sinh viên</Tab>
           <Tab _focus={{ outline: "none" }}>Khoa</Tab>
+          <Tab _focus={{ outline: "none" }}>Chuyên ngành</Tab>
           <Tab _focus={{ outline: "none" }}>Môn học</Tab>
           <Tab _focus={{ outline: "none" }}>Lớp học</Tab>
-          <Tab _focus={{ outline: "none" }}>Tra cứu</Tab>
         </TabList>
         <TabPanels>
           <TabPanel px="1.5rem">
@@ -51,35 +56,23 @@ const Home = () => {
           <TabPanel px="1.5rem">
             <TeacherTab />
           </TabPanel>
-          <TabPanel>
-            <p>Sinh viên</p>
+          <TabPanel px="1.5rem">
+            <StudentTab />
           </TabPanel>
-          <TabPanel>
-            <p>Khoa</p>
+          <TabPanel px="1.5rem">
+            <DepartmentTab />
           </TabPanel>
-          <TabPanel>
-            <p>Chuyên ngành</p>
+          <TabPanel px="1.5rem">
+            <MajorTab />
           </TabPanel>
-          <TabPanel>
-            <p>Môn học</p>
+          <TabPanel px="1.5rem">
+            <SubjectTab />
           </TabPanel>
-          <TabPanel>
-            <p>Lớp học</p>
-          </TabPanel>
-          <TabPanel>
-            <p>Tra cứu</p>
+          <TabPanel px="1.5rem">
+            <ClassTab />
           </TabPanel>
         </TabPanels>
       </Tabs>
-      {/* <Box
-        position="fixed"
-        bottom="0"
-        textAlign="center"
-        w="100%"
-        background="#38A169"
-        h="50px">
-        This is footer
-      </Box> */}
     </Box>
   );
 };

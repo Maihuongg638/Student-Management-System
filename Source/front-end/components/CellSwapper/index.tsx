@@ -8,7 +8,8 @@ interface Props {
 function CellSwapper({ children, ...boxProps }: Props & BoxProps) {
   return (
     <Box
-      boxShadow="rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;"
+      boxShadow="rgba(0, 0, 0, 0.35) 0px 5px 15px;"
+      // backgroundColor="#f2f2f2"
       borderRadius="10px"
       {...boxProps}>
       {children}

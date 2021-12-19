@@ -1,50 +1,36 @@
 /* eslint-disable react/no-children-prop */
 import {
+  Box,
   Button,
-  FormControl,
-  FormLabel,
   Input,
   InputGroup,
   InputLeftAddon,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Radio,
   RadioGroup,
+  Slide,
   Stack,
-  Switch,
+  useDisclosure,
 } from "@chakra-ui/react";
 import * as React from "react";
 
-interface Props {
-  isOpen: boolean;
-  onClose: () => void;
-}
+interface Props {}
 
-export function EditModal({ isOpen, onClose }: Props) {
-  const [edit, setEdit] = React.useState(false);
-  const handelChangeEdit = () => {
-    setEdit(!edit);
-  };
-
+export function AddModalTeacher({}: Props) {
+  const { isOpen, onToggle } = useDisclosure();
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="xl">
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Thông tin chi tiết</ModalHeader>
-        <ModalCloseButton colorScheme="green" />
-        <ModalBody>
+    <Box my="20px">
+      <Button w="100%" colorScheme="green" onClick={onToggle}>
+        Thêm giáo viên
+      </Button>
+      <Slide direction="top" in={isOpen} style={{ zIndex: 10 }}>
+        <Box p="40px" mx="30%" bg="white" rounded="md" shadow="md">
           <InputGroup>
             <InputLeftAddon w="25%" children="Mã số" />
             <Input
+              background="white"
               _focus={{ outline: "none" }}
               type="text"
               defaultValue="A123"
-              disabled={!edit}
             />
           </InputGroup>
           <InputGroup>
@@ -53,7 +39,6 @@ export function EditModal({ isOpen, onClose }: Props) {
               _focus={{ outline: "none" }}
               type="text"
               defaultValue="Nguyen Van A"
-              disabled={!edit}
             />
           </InputGroup>
           <InputGroup>
@@ -62,17 +47,16 @@ export function EditModal({ isOpen, onClose }: Props) {
               _focus={{ outline: "none" }}
               type="text"
               defaultValue="22/03/2000"
-              disabled={!edit}
             />
           </InputGroup>
           <InputGroup alignItems="center">
             <InputLeftAddon w="25%" children="Giới tính" />
             <RadioGroup ml="15px" defaultValue="1">
               <Stack direction="row">
-                <Radio colorScheme="green" value="1" isDisabled={!edit}>
+                <Radio colorScheme="green" value="1">
                   Name
                 </Radio>
-                <Radio colorScheme="green" value="2" isDisabled={!edit}>
+                <Radio colorScheme="green" value="2">
                   Nữ
                 </Radio>
               </Stack>
@@ -84,7 +68,6 @@ export function EditModal({ isOpen, onClose }: Props) {
               _focus={{ outline: "none" }}
               type="text"
               defaultValue="Giáo sư"
-              disabled={!edit}
             />
           </InputGroup>
           <InputGroup>
@@ -93,7 +76,6 @@ export function EditModal({ isOpen, onClose }: Props) {
               _focus={{ outline: "none" }}
               type="tel"
               defaultValue="091394281"
-              disabled={!edit}
             />
           </InputGroup>
           <InputGroup>
@@ -102,7 +84,6 @@ export function EditModal({ isOpen, onClose }: Props) {
               _focus={{ outline: "none" }}
               type="text"
               defaultValue="Thành phố HCM"
-              disabled={!edit}
             />
           </InputGroup>
           <InputGroup>
@@ -111,7 +92,6 @@ export function EditModal({ isOpen, onClose }: Props) {
               _focus={{ outline: "none" }}
               type="email"
               defaultValue="example@gmail.com"
-              disabled={!edit}
             />
           </InputGroup>
           <InputGroup>
@@ -120,7 +100,6 @@ export function EditModal({ isOpen, onClose }: Props) {
               _focus={{ outline: "none" }}
               type="text"
               defaultValue="123456"
-              disabled={!edit}
             />
           </InputGroup>
           <InputGroup>
@@ -129,28 +108,13 @@ export function EditModal({ isOpen, onClose }: Props) {
               _focus={{ outline: "none" }}
               type="text"
               defaultValue="Môi trường"
-              disabled={!edit}
             />
           </InputGroup>
-        </ModalBody>
-        <ModalFooter>
-          <FormControl display="flex" alignItems="center">
-            <FormLabel htmlFor="email-alerts">Chỉnh sửa thông tin</FormLabel>
-            <Switch
-              colorScheme="green"
-              id="email-alerts"
-              isChecked={edit}
-              onChange={handelChangeEdit}
-            />
-          </FormControl>
-          <Button
-            _focus={{ outline: "none" }}
-            colorScheme="green"
-            disabled={!edit}>
-            Lưu thay đổi
+          <Button mt="20px" colorScheme="green" onClick={onToggle}>
+            Quay lại
           </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </Box>
+      </Slide>
+    </Box>
   );
 }
