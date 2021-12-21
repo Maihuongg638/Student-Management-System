@@ -10,4 +10,4 @@ RUN yarn
 
 EXPOSE 9009
 
-CMD ["yarn", "dev"]
+CMD ["yarn", "start"]

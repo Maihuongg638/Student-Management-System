@@ -11,7 +11,6 @@ import {
   Slide,
   Spinner,
   Stack,
-  useDisclosure,
 } from "@chakra-ui/react";
 import * as React from "react";
 import { SelectOption, StudentAdd, StudentData } from "../../constants/types";
@@ -20,10 +19,11 @@ import { getSelectClass, InsertStudent } from "../../services/api";
 interface Props {
   IDAuto: string;
   onAdd?: (item: StudentData) => void;
+  isOpen?: boolean;
+  onToggle?: () => void;
 }
 
-export function AddModalStudent({ IDAuto, onAdd }: Props) {
-  const { isOpen, onToggle } = useDisclosure();
+export function AddModalStudent({ IDAuto, onAdd, isOpen, onToggle }: Props) {
   const [option, setOption] = React.useState<SelectOption[]>();
   const [select, setSelect] = React.useState<SelectOption>();
   const [isLoading, setIsLoading] = React.useState(false);
@@ -84,7 +84,7 @@ export function AddModalStudent({ IDAuto, onAdd }: Props) {
         if (msg.message === "oke") {
           onAdd && onAdd(temp);
           setIsLoading(false);
-          setItemAdd({
+          setItemAdd(() => ({
             Ma_SV: "",
             Ho: "",
             Ten: "",
@@ -97,8 +97,7 @@ export function AddModalStudent({ IDAuto, onAdd }: Props) {
             Email: "",
             SDT: "",
             Ma_LH: "",
-          });
-
+          }));
           alert("Thêm thành công");
         } else {
           alert("failed");
@@ -168,9 +167,6 @@ export function AddModalStudent({ IDAuto, onAdd }: Props) {
 
   return (
     <Box my="20px">
-      <Button w="100%" colorScheme="green" onClick={onToggle}>
-        Thêm Sinh Viên
-      </Button>
       <Slide direction="top" in={isOpen} style={{ zIndex: 10 }}>
         <Box p="40px" bg="white" rounded="md" shadow="md">
           <InputGroup>
@@ -191,7 +187,7 @@ export function AddModalStudent({ IDAuto, onAdd }: Props) {
               onChange={(event) => {
                 onChangeFirstName(event.target.value);
               }}
-              defaultValue={itemAdd.Ho}
+              defaultValue=""
             />
           </InputGroup>
           <InputGroup>
@@ -203,7 +199,7 @@ export function AddModalStudent({ IDAuto, onAdd }: Props) {
               onChange={(event) => {
                 onChangeMiddleName(event.target.value);
               }}
-              defaultValue={itemAdd.Ten_Dem}
+              defaultValue=""
             />
           </InputGroup>
           <InputGroup>
@@ -215,7 +211,7 @@ export function AddModalStudent({ IDAuto, onAdd }: Props) {
               onChange={(event) => {
                 onChangeLastName(event.target.value);
               }}
-              defaultValue={itemAdd.Ten}
+              defaultValue=""
             />
           </InputGroup>
           <InputGroup>
@@ -227,7 +223,7 @@ export function AddModalStudent({ IDAuto, onAdd }: Props) {
               onChange={(event) => {
                 onChangeDate(event.target.value);
               }}
-              defaultValue={itemAdd.Ngay_Sinh}
+              defaultValue=""
             />
           </InputGroup>
           <InputGroup>
@@ -239,7 +235,7 @@ export function AddModalStudent({ IDAuto, onAdd }: Props) {
               onChange={(event) => {
                 onChangeOrigin(event.target.value);
               }}
-              defaultValue={itemAdd.Que_Quan}
+              defaultValue=""
             />
           </InputGroup>
           <InputGroup>
@@ -251,7 +247,7 @@ export function AddModalStudent({ IDAuto, onAdd }: Props) {
               onChange={(event) => {
                 onChangeCMND(event.target.value);
               }}
-              defaultValue={itemAdd.CMND}
+              defaultValue=""
             />
           </InputGroup>
           <InputGroup alignItems="center">
@@ -276,7 +272,7 @@ export function AddModalStudent({ IDAuto, onAdd }: Props) {
               onChange={(event) => {
                 onChangePhone(event.target.value);
               }}
-              defaultValue={itemAdd.SDT}
+              defaultValue=""
             />
           </InputGroup>
           <InputGroup>
@@ -288,7 +284,7 @@ export function AddModalStudent({ IDAuto, onAdd }: Props) {
               onChange={(event) => {
                 onChangeEmail(event.target.value);
               }}
-              defaultValue={itemAdd.Email}
+              defaultValue=""
             />
           </InputGroup>
           <InputGroup>
@@ -300,7 +296,7 @@ export function AddModalStudent({ IDAuto, onAdd }: Props) {
               onChange={(event) => {
                 onChangePassword(event.target.value);
               }}
-              defaultValue={itemAdd.Mat_Khau}
+              defaultValue=""
             />
           </InputGroup>
           <InputGroup>
@@ -343,7 +339,7 @@ export function AddModalStudent({ IDAuto, onAdd }: Props) {
             mt="20px"
             mx="10px"
             onClick={() => {
-              onToggle();
+              onToggle && onToggle();
             }}>
             Quay lại
           </Button>

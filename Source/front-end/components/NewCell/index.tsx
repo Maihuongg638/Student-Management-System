@@ -6,9 +6,10 @@ import { CellSwapper } from "../CellSwapper";
 interface Props {
   title?: string;
   content?: string;
+  url?: string;
 }
 
-function NewCell({ title, content, ...boxProps }: Props & BoxProps) {
+function NewCell({ title, content, url, ...boxProps }: Props & BoxProps) {
   const [favorite, setFavorite] = React.useState(false);
   const handelChageIcon = () => {
     setFavorite(!favorite);
@@ -33,8 +34,8 @@ function NewCell({ title, content, ...boxProps }: Props & BoxProps) {
         {title}
       </Text>
       <Flex w="100%" h="150px" mt="10px" overflow="auto">
-        <Img mr="10px" src="img/new.png" />
-        <Text fontSize="12px" textAlign="left">
+        <Img mr="10px" src={url} />
+        <Text fontSize="16px" textAlign="left">
           {content}
         </Text>
       </Flex>

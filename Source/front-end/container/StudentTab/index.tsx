@@ -72,6 +72,7 @@ export function StudentTab() {
   const [textSearch, setTextSearch] = React.useState("");
   const [type, setType] = React.useState("1");
   const [select, setSelect] = React.useState("");
+  const { isOpen: isOpenAdd, onToggle: onToggleAdd } = useDisclosure();
 
   const generateID = () => {
     let temp = data && Number(data[0].Ma_SV.substring(2));
@@ -154,12 +155,20 @@ export function StudentTab() {
         let listTemp = result as StudentData[];
         setData((d) => (d = listTemp));
       });
-  }, [getStudentAndOther]);
+  }, []);
 
   return (
     <Box w="100%" border="1px solid #89898b" p="20px" borderRadius="10px">
       <Search onGetText={handleChangeText} onChangeType={handleChangeType} />
-      <AddModalStudent IDAuto={generateID()} onAdd={handleAddItem} />
+      <Button w="100%" colorScheme="green" onClick={onToggleAdd}>
+        Thêm Sinh Viên
+      </Button>
+      <AddModalStudent
+        IDAuto={generateID()}
+        onAdd={handleAddItem}
+        isOpen={isOpenAdd}
+        onToggle={onToggleAdd}
+      />
       <Table>
         <Thead>
           <Tr>

@@ -4,7 +4,7 @@ export const configDB = {
   host: "localhost",
   user: "root",
   password: "",
-  database: "test",
+  database: "studentdb",
   port: 3306,
 };
 
